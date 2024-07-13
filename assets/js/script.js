@@ -92,60 +92,60 @@ window.addEventListener("scroll", function () {
 });
 
 
-document.addEventListener('DOMContentLoaded', function() {
-  // Fetch meal details from TheMealDB API
-  fetch('https://www.themealdb.com/api/json/v1/1/lookup.php?i=52771')
-      .then(response => response.json())
-      .then(data => {
-          const meal = data.meals[0];
-          renderMeal(meal);
-      })
-      .catch(error => {
-          console.error('Error fetching meal details:', error);
-      });
+// document.addEventListener('DOMContentLoaded', function() {
+//   // Fetch meal details from TheMealDB API
+//   fetch('https://www.themealdb.com/api/json/v1/1/lookup.php?i=52771')
+//       .then(response => response.json())
+//       .then(data => {
+//           const meal = data.meals[0];
+//           renderMeal(meal);
+//       })
+//       .catch(error => {
+//           console.error('Error fetching meal details:', error);
+//       });
 
-  // Function to render meal details
-  function renderMeal(meal) {
-      const mealContainer = document.getElementById('mealDetails');
+//   // Function to render meal details
+//   function renderMeal(meal) {
+//       const mealContainer = document.getElementById('mealDetails');
 
-      // Create HTML structure for meal details
-      const html = `
-          <img src="${meal.strMealThumb}" alt="${meal.strMeal}" class="meal-image">
-          <h2 class="meal-title">${meal.strMeal}</h2>
+//       // Create HTML structure for meal details
+//       const html = `
+//           <img src="${meal.strMealThumb}" alt="${meal.strMeal}" class="meal-image">
+//           <h2 class="meal-title">${meal.strMeal}</h2>
 
-          <div class="meal-ingredients">
-              <h3>Ingredients:</h3>
-              <ul>
-                  ${renderIngredients(meal)}
-              </ul>
-          </div>
+//           <div class="meal-ingredients">
+//               <h3>Ingredients:</h3>
+//               <ul>
+//                   ${renderIngredients(meal)}
+//               </ul>
+//           </div>
 
-          <div class="meal-instructions">
-              <h3>Instructions:</h3>
-              <p>${meal.strInstructions}</p>
-          </div>
+//           <div class="meal-instructions">
+//               <h3>Instructions:</h3>
+//               <p>${meal.strInstructions}</p>
+//           </div>
 
-          <div class="source-link">
-              <a href="${meal.strYoutube}" target="_blank">Watch the recipe video</a>
-          </div>
-      `;
+//           <div class="source-link">
+//               <a href="${meal.strYoutube}" target="_blank">Watch the recipe video</a>
+//           </div>
+//       `;
 
-      // Insert the HTML into the container
-      mealContainer.innerHTML = html;
-  }
+//       // Insert the HTML into the container
+//       mealContainer.innerHTML = html;
+//   }
 
-  // Function to render ingredients list
-  function renderIngredients(meal) {
-      let ingredients = '';
-      // Loop through ingredients from strIngredient1 to strIngredient20
-      for (let i = 1; i <= 20; i++) {
-          const ingredient = meal[`strIngredient${i}`];
-          const measure = meal[`strMeasure${i}`];
+//   // Function to render ingredients list
+//   function renderIngredients(meal) {
+//       let ingredients = '';
+//       // Loop through ingredients from strIngredient1 to strIngredient20
+//       for (let i = 1; i <= 20; i++) {
+//           const ingredient = meal[`strIngredient${i}`];
+//           const measure = meal[`strMeasure${i}`];
 
-          if (ingredient && ingredient.trim() !== '') {
-              ingredients += `<li>${measure} ${ingredient}</li>`;
-          }
-      }
-      return ingredients;
-  }
-});
+//           if (ingredient && ingredient.trim() !== '') {
+//               ingredients += `<li>${measure} ${ingredient}</li>`;
+//           }
+//       }
+//       return ingredients;
+//   }
+// });
