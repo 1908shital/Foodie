@@ -90,3 +90,74 @@ window.addEventListener("scroll", function () {
   }
 
 });
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  var searchBtn = document.querySelector('[data-search-btn]');
+  var searchResults = document.getElementById('searchResults');
+
+  searchBtn.addEventListener('click', function() {
+      var searchTerm = ''; // Initialize search term
+
+      // Get the input value or use some other way to get the search term
+      // For simplicity, let's assume there's an input field with id 'searchInput'
+      var inputField = document.getElementById('searchInput');
+      if (inputField) {
+          searchTerm = inputField.value.trim();
+      }
+
+      if (searchTerm !== '') {
+          searchMealByName(searchTerm);
+      } else {
+          displayErrorMessage('Please enter a food name to search.');
+      }
+  });
+
+  function searchMealByName(name) {
+      //var apiKey = 'YOUR_API_KEY'; // Replace with your TheMealDB API key
+      var url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${name}`;
+
+      fetch(url)
+          .then(function(response) {
+              if (!response.ok) {
+                  throw new Error('Network response was not ok');
+              }
+              return response.json();
+          })
+          .then(function(data) {
+              if (data.meals) {
+                  displaySearchResults(data.meals);
+              } else {
+                  displayErrorMessage('No meals found. Please try again.');
+              }
+          })
+          .catch(function(error) {
+              console.error('Error fetching data:', error);
+              displayErrorMessage('Error fetching data. Please try again later.');
+          });
+  }
+
+  function displaySearchResults(meals) {
+      searchResults.innerHTML = ''; // Clear previous results
+
+      meals.forEach(function(meal) {
+          var mealName = meal.strMeal;
+          var mealImage = meal.strMealThumb;
+          var mealId = meal.idMeal;
+
+          var mealElement = `
+              <div class="meal">
+                  <h3>${mealName}</h3>
+                  <img src="${mealImage}" alt="${mealName}">
+                  <p>Meal ID: ${mealId}</p>
+              </div>
+          `;
+
+          searchResults.innerHTML += mealElement;
+      });
+  }
+
+  function displayErrorMessage(message) {
+      searchResults.innerHTML = `<p class="error">${message}</p>`;
+  }
+});
