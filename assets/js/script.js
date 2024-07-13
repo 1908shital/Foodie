@@ -93,71 +93,59 @@ window.addEventListener("scroll", function () {
 
 
 document.addEventListener('DOMContentLoaded', function() {
-  var searchBtn = document.querySelector('[data-search-btn]');
-  var searchResults = document.getElementById('searchResults');
-
-  searchBtn.addEventListener('click', function() {
-      var searchTerm = ''; // Initialize search term
-
-      // Get the input value or use some other way to get the search term
-      // For simplicity, let's assume there's an input field with id 'searchInput'
-      var inputField = document.getElementById('searchInput');
-      if (inputField) {
-          searchTerm = inputField.value.trim();
-      }
-
-      if (searchTerm !== '') {
-          searchMealByName(searchTerm);
-      } else {
-          displayErrorMessage('Please enter a food name to search.');
-      }
-  });
-
-  function searchMealByName(name) {
-      //var apiKey = 'YOUR_API_KEY'; // Replace with your TheMealDB API key
-      var url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${name}`;
-
-      fetch(url)
-          .then(function(response) {
-              if (!response.ok) {
-                  throw new Error('Network response was not ok');
-              }
-              return response.json();
-          })
-          .then(function(data) {
-              if (data.meals) {
-                  displaySearchResults(data.meals);
-              } else {
-                  displayErrorMessage('No meals found. Please try again.');
-              }
-          })
-          .catch(function(error) {
-              console.error('Error fetching data:', error);
-              displayErrorMessage('Error fetching data. Please try again later.');
-          });
-  }
-
-  function displaySearchResults(meals) {
-      searchResults.innerHTML = ''; // Clear previous results
-
-      meals.forEach(function(meal) {
-          var mealName = meal.strMeal;
-          var mealImage = meal.strMealThumb;
-          var mealId = meal.idMeal;
-
-          var mealElement = `
-              <div class="meal">
-                  <h3>${mealName}</h3>
-                  <img src="${mealImage}" alt="${mealName}">
-                  <p>Meal ID: ${mealId}</p>
-              </div>
-          `;
-
-          searchResults.innerHTML += mealElement;
+  // Fetch meal details from TheMealDB API
+  fetch('https://www.themealdb.com/api/json/v1/1/lookup.php?i=52771')
+      .then(response => response.json())
+      .then(data => {
+          const meal = data.meals[0];
+          renderMeal(meal);
+      })
+      .catch(error => {
+          console.error('Error fetching meal details:', error);
       });
+
+  // Function to render meal details
+  function renderMeal(meal) {
+      const mealContainer = document.getElementById('mealDetails');
+
+      // Create HTML structure for meal details
+      const html = `
+          <img src="${meal.strMealThumb}" alt="${meal.strMeal}" class="meal-image">
+          <h2 class="meal-title">${meal.strMeal}</h2>
+
+          <div class="meal-ingredients">
+              <h3>Ingredients:</h3>
+              <ul>
+                  ${renderIngredients(meal)}
+              </ul>
+          </div>
+
+          <div class="meal-instructions">
+              <h3>Instructions:</h3>
+              <p>${meal.strInstructions}</p>
+          </div>
+
+          <div class="source-link">
+              <a href="${meal.strYoutube}" target="_blank">Watch the recipe video</a>
+          </div>
+      `;
+
+      // Insert the HTML into the container
+      mealContainer.innerHTML = html;
   }
 
-  function displayErrorMessage(message) {
-      searchResults.innerHTML = `<p class="error">${message}</p>`;
+  // Function to render ingredients list
+  function renderIngredients(meal) {
+      let ingredients = '';
+      // Loop through ingredients from strIngredient1 to strIngredient20
+      for (let i = 1; i <= 20; i++) {
+          const ingredient = meal[`strIngredient${i}`];
+          const measure = meal[`strMeasure${i}`];
+
+          if (ingredient && ingredient.trim() !== '') {
+              ingredients += `<li>${measure} ${ingredient}</li>`;
+          }
+      }
+      return ingredients;
   }
 });

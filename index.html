@@ -33,6 +33,47 @@
   <link rel="preload" as="image" href="./assets/images/hero-banner-bg.png" media="min-width(768px)">
   <link rel="preload" as="image" href="./assets/images/hero-bg.jpg">
 
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        padding: 20px;
+    }
+    .meal-container {
+        max-width: 600px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        overflow: hidden;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    .meal-image {
+        max-width: 100%;
+        border-radius: 8px 8px 0 0;
+    }
+    .meal-title {
+        font-size: 24px;
+        font-weight: bold;
+        margin: 10px 0;
+    }
+    .meal-ingredients {
+        margin-bottom: 10px;
+    }
+    .meal-instructions {
+        margin-top: 20px;
+    }
+    .source-link {
+        display: block;
+        margin-top: 20px;
+        text-align: center;
+    }
+    .source-link a {
+        color: #007bff;
+        text-decoration: none;
+    }
+</style>
+
 </head>
 
 <body id="top">
@@ -78,7 +119,7 @@
         <button class="search-btn" aria-label="Search" data-search-btn>
           <ion-icon name="search-outline"></ion-icon>
         </button>
-        <div id="searchResults"></div>
+        <div class="meal-container" id="mealDetails"></div>
 
         <!-- <input type="text" id="searchInput" placeholder="Enter food name...">
         <button id="searchButton">Search</button>
